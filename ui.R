@@ -1,0 +1,48 @@
+library(shiny)
+library(ggplot2)
+
+shinyUI(fluidPage(theme="amelia.css",
+  headerPanel("Crop's emissions due to N fertilisers - Calculator"),
+  fluidRow(column(4,offset = 1,
+            helpText('This app estimates the emissions due to the application of fertilisers to crops. The methodology is based on the 2006 IPCC Guidelines, as well as in EMEP/EEA 2013 Guidebook.'),
+            helpText('Due to the differences in emission factor, some input regarding the fertiliser is needed. This information is input by the user in the following formularie.'),
+            br(),
+            strong("User's interface:"),
+            helpText("To obtain the emission, you must include the input variables in the formularie below. You must select the type of fertiliser used. If 'animal manure' is selected, the animal is also required (if not it do not intervene in the calculations). Finally, the amount of fertiliser is included through the slider on the bottom."),
+            br(),
+            br(),
+            h3('Input variables'),
+            br(),
+            strong("Type of fertiliser:"),
+            checkboxInput(inputId = "tSynth", label="Synthetic"),
+            checkboxInput(inputId = "tManur", label="Animal Manure"),
+            br(),
+            selectInput("animalInput", label = strong("Animal:"),
+                        choices= c("Dairy Cattle", "Non-Dairy Cattle", "Swine", "Sheep"),
+                        selected = NULL),
+            br(),
+            sliderInput("fertTonnesInput", label = strong("Tonnes of fertiliser applied:"),
+                        min = 1, max = 1000, value = 1)
+        ),
+        column(5, offset = 1,
+            h3('Results'),
+            br(),
+            strong('The animal manure is from:'),
+            textOutput('anim'),
+            br(),
+            strong('The amount of fertilisers applied to soil (t N) is:'),
+            textOutput('fertTonnes'),
+            br(),
+            strong('The N2O emission (t N2O) is:'),
+            textOutput('emisN2O'),
+            br(),
+            strong('The NH3 emission (t NH3) is:'),
+            textOutput('emisNH3'),
+            br(),
+            strong('The NOX emission (t NOX) is:'),
+            textOutput('emisNOX'),
+            br(),
+            plotOutput('emisPlot')
+        )
+      )
+))
